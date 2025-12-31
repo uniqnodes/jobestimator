@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mechanical Services Job Estimator PoC</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Explainable Pricing PoC</p>
+          <h1>Mechanical Job Estimator</h1>
+          <p class="subtitle">
+            A confidence-based range estimator that explains its pricing logic and
+            proves it with similar past jobs.
+          </p>
+        </div>
+        <div class="hero-badge">
+          <span>AI-feel</span>
+          <span>Range + Confidence</span>
+          <span>Explainable</span>
+        </div>
+      </header>
+
+      <section class="scenario">
+        <div>
+          <h2>Try scenarios</h2>
+          <p>Kickstart the demo with three curated jobs.</p>
+        </div>
+        <div class="scenario-buttons">
+          <button class="ghost" data-scenario="hvac-emergency">HVAC emergency</button>
+          <button class="ghost" data-scenario="plumbing-maint">Plumbing maintenance</button>
+          <button class="ghost" data-scenario="commercial-install">Commercial install</button>
+          <button class="demo" id="demo-toggle">Proposal demo mode</button>
+        </div>
+        <p class="demo-status" id="demo-status">Demo mode ready.</p>
+      </section>
+
+      <main class="grid">
+        <section class="card form-card">
+          <h2>Job input</h2>
+          <form id="estimate-form">
+            <div class="field">
+              <label for="category">Service category</label>
+              <select id="category" required>
+                <option value="HVAC">HVAC</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Electrical">Electrical</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="jobType">Job type</label>
+              <select id="jobType" required></select>
+            </div>
+
+            <div class="field">
+              <label for="siteType">Site type</label>
+              <select id="siteType" required>
+                <option value="residential">Residential</option>
+                <option value="commercial">Commercial</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="urgency">Urgency</label>
+              <select id="urgency" required>
+                <option value="normal">Normal</option>
+                <option value="same-day">Same-day</option>
+                <option value="after-hours">After-hours</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="techCount">Tech count</label>
+              <select id="techCount">
+                <option value="1">1 tech</option>
+                <option value="2">2 techs</option>
+                <option value="3">3 techs</option>
+                <option value="4">4 techs</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="hours">Estimated hours</label>
+              <input id="hours" type="number" min="0.5" step="0.5" placeholder="e.g. 6" />
+              <span class="helper">Leave empty if unknown.</span>
+            </div>
+
+            <div class="field">
+              <label for="materialsCost">Materials cost</label>
+              <input id="materialsCost" type="number" min="0" step="50" placeholder="e.g. 1800" />
+              <span class="helper">Optional — estimator widens range if unknown.</span>
+            </div>
+
+            <div class="field">
+              <label for="complexity">Complexity</label>
+              <select id="complexity">
+                <option value="standard">Standard</option>
+                <option value="complex">Complex</option>
+                <option value="unknown">Unknown conditions</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="locationFactor">Location factor</label>
+              <select id="locationFactor">
+                <option value="0.9">Low cost area</option>
+                <option value="1" selected>Medium</option>
+                <option value="1.1">High cost area</option>
+              </select>
+            </div>
+
+            <button class="primary" type="submit">Estimate range</button>
+          </form>
+        </section>
+
+        <section class="card results-card">
+          <div class="results-header">
+            <div>
+              <h2>Estimate</h2>
+              <p id="result-summary">Enter job details to see the range.</p>
+            </div>
+            <button class="ghost small" id="copy-summary">Copy summary</button>
+          </div>
+
+          <div class="range">
+            <div>
+              <span>Low</span>
+              <strong id="low">$0</strong>
+            </div>
+            <div>
+              <span>Expected</span>
+              <strong id="expected">$0</strong>
+            </div>
+            <div>
+              <span>High</span>
+              <strong id="high">$0</strong>
+            </div>
+          </div>
+
+          <div class="confidence">
+            <span>Confidence</span>
+            <div class="meter">
+              <div id="confidence-bar"></div>
+            </div>
+            <strong id="confidence-value">0%</strong>
+          </div>
+
+          <div class="breakdown">
+            <h3>Breakdown</h3>
+            <div class="breakdown-grid">
+              <div>
+                <span>Labor</span>
+                <strong id="labor">$0</strong>
+              </div>
+              <div>
+                <span>Materials</span>
+                <strong id="materials">$0</strong>
+              </div>
+              <div>
+                <span>Overhead + Margin</span>
+                <strong id="overhead">$0</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="explain">
+            <div class="explain-header">
+              <h3>Why this range?</h3>
+              <button class="ghost small" id="explain-btn">Explain estimate</button>
+            </div>
+            <ul id="explain-list">
+              <li>Run an estimate to see the reasoning.</li>
+            </ul>
+          </div>
+
+          <div class="similar">
+            <h3>Similar jobs</h3>
+            <div id="similar-list" class="similar-list"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
