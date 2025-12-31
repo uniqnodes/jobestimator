@@ -145,7 +145,7 @@ function estimateRange(input, dataset) {
       materials: Math.round(materialsEstimate),
       overhead: Math.round(overheadEstimate)
     },
-    similarJobs: usable.slice(0, 7).map((item) => ({
+    similarJobs: usable.slice(0, 5).map((item) => ({
       id: item.job.id,
       category: item.job.category,
       jobType: item.job.jobType,

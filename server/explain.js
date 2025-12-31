@@ -1,9 +1,9 @@
 const FALLBACK_BULLETS = [
-  "Estimate uses similar jobs with matching category, job type, and urgency.",
-  "Range widens when complexity or on-site unknowns introduce risk.",
-  "Labor and materials are balanced from the closest prior jobs.",
-  "Confidence drops if inputs are missing or similarity is weak.",
-  "Final pricing can shift after on-site inspection."
+  "Estimate is anchored to similar jobs with the closest category and job type.",
+  "Urgency adds a premium and widens the range to reflect schedule risk.",
+  "Unknown conditions expand the range and reduce confidence.",
+  "Differences in hours or materials vs. similar jobs shift the midpoint.",
+  "Final pricing can change after an on-site inspection."
 ];
 
 async function generateExplanation({ input, estimate }) {
@@ -25,7 +25,7 @@ async function generateExplanation({ input, estimate }) {
     {
       role: "system",
       content:
-        "You are a pricing assistant. Provide 4-6 concise bullet points (80-120 words total) explaining the estimate. Be factual, avoid guarantees, and mention key risk factors. End with a gentle inspection caveat if relevant."
+        "You are a pricing assistant. Provide 4-6 concise bullet points (80-120 words total) explaining the estimate. Must mention urgency impact, unknown conditions risk, and how this job differs from similar jobs. Be factual, avoid guarantees, and include a final inspection caveat."
     },
     {
       role: "user",

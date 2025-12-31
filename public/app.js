@@ -17,20 +17,9 @@ const locationEl = document.getElementById("locationFactor");
 const explainButton = document.getElementById("explain-btn");
 const copyButton = document.getElementById("copy-summary");
 const summaryEl = document.getElementById("result-summary");
-const demoButton = document.getElementById("demo-toggle");
-const demoStatus = document.getElementById("demo-status");
 
 let latestInput = null;
 let latestEstimate = null;
-let demoRunning = false;
-let demoTimer = null;
-let demoIndex = 0;
-
-const demoSequence = [
-  { key: "hvac-emergency", label: "HVAC emergency: wide range, lower confidence" },
-  { key: "plumbing-maint", label: "Plumbing maintenance: tight range, high confidence" },
-  { key: "commercial-install", label: "Commercial install: materials-heavy, higher total" }
-];
 
 function formatCurrency(value) {
   return new Intl.NumberFormat("en-US", {
@@ -216,45 +205,13 @@ copyButton.addEventListener("click", () => {
 });
 
 document.querySelectorAll("[data-scenario]").forEach((button) => {
-  button.addEventListener("click", () => applyScenario(button.dataset.scenario));
+  button.addEventListener("click", () => {
+    document.querySelectorAll("[data-scenario]").forEach((item) => {
+      item.classList.remove("active");
+    });
+    button.classList.add("active");
+    applyScenario(button.dataset.scenario);
+  });
 });
 
 setJobTypes(categoryEl.value);
-
-async function runDemoStep() {
-  const scenario = demoSequence[demoIndex];
-  demoStatus.textContent = scenario.label;
-  await applyScenario(scenario.key);
-  await runExplain();
-  demoIndex = (demoIndex + 1) % demoSequence.length;
-}
-
-function scheduleNextDemo() {
-  if (!demoRunning) {
-    return;
-  }
-  runDemoStep().finally(() => {
-    demoTimer = setTimeout(scheduleNextDemo, 2500);
-  });
-}
-
-function toggleDemo() {
-  demoRunning = !demoRunning;
-  if (demoRunning) {
-    demoButton.textContent = "Stop demo mode";
-    demoStatus.textContent = "Demo running...";
-    demoIndex = 0;
-    scheduleNextDemo();
-  } else {
-    demoButton.textContent = "Proposal demo mode";
-    demoStatus.textContent = "Demo mode ready.";
-    if (demoTimer) {
-      clearTimeout(demoTimer);
-      demoTimer = null;
-    }
-  }
-}
-
-if (demoButton) {
-  demoButton.addEventListener("click", toggleDemo);
-}
