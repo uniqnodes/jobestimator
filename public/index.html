@@ -12,8 +12,8 @@
         <div>
           <p class="eyebrow">Explainable Pricing PoC</p>
           <h1>Mechanical Job Estimator</h1>
-          <p class="subtitle">Confidence-based estimate range from similar past jobs.</p>
-          <p class="subtitle small">Not a single number—an uncertainty-aware quote.</p>
+          <p class="subtitle">An uncertainty-aware job estimator based on similar past jobs.</p>
+          <p class="subtitle small">This demo shows how estimates adapt when conditions are unclear.</p>
         </div>
         <div class="hero-badge">
           <span>AI-feel</span>
@@ -121,6 +121,7 @@
             </div>
             <button class="ghost small" id="copy-summary">Copy summary</button>
           </div>
+          <p class="range-insight" id="range-insight">Why this range? Run an estimate to see the driver.</p>
 
           <div class="range">
             <div>
@@ -138,7 +139,12 @@
           </div>
 
           <div class="confidence">
-            <span>Confidence</span>
+            <span>
+              Confidence
+              <button class="info" id="confidence-info" type="button" title="Confidence reflects similarity strength, input completeness, and materials volatility.">
+                i
+              </button>
+            </span>
             <div class="meter">
               <div id="confidence-bar"></div>
             </div>
@@ -179,6 +185,10 @@
           </div>
         </section>
       </main>
+      <footer class="footer">
+        <span>Demo uses simulated historical data for illustration.</span>
+        <span>Designed mobile-first for field technicians.</span>
+      </footer>
     </div>
 
     <script src="app.js"></script>

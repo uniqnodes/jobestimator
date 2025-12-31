@@ -17,6 +17,8 @@ const locationEl = document.getElementById("locationFactor");
 const explainButton = document.getElementById("explain-btn");
 const copyButton = document.getElementById("copy-summary");
 const summaryEl = document.getElementById("result-summary");
+const rangeInsightEl = document.getElementById("range-insight");
+const confidenceInfoEl = document.getElementById("confidence-info");
 
 let latestInput = null;
 let latestEstimate = null;
@@ -66,6 +68,17 @@ function updateResults(estimate) {
   document.getElementById("confidence-bar").style.width = `${estimate.confidence}%`;
 
   summaryEl.textContent = `Based on ${estimate.meta.similarCount} similar jobs, avg similarity ${estimate.meta.avgSimilarity}.`;
+  rangeInsightEl.textContent =
+    estimate.confidence < 70
+      ? "Range widened due to unknown site conditions and time-sensitive scheduling."
+      : "Range reflects similar jobs with aligned scope and conditions.";
+  if (confidenceInfoEl) {
+    const reason =
+      estimate.confidence < 70
+        ? "Lower confidence due to limited similar jobs and variable materials."
+        : "Higher confidence driven by strong similarity and complete inputs.";
+    confidenceInfoEl.setAttribute("title", reason);
+  }
 
   const similarList = document.getElementById("similar-list");
   similarList.innerHTML = "";
